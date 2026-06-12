@@ -710,30 +710,43 @@
   <!-- ─── HOME ─── -->
   <section id="home">
     <div class="hero-greeting">Welcome</div>
-    <h1 class="hero-name">Hua Heyu<em>.</em></h1>
-    <div class="hero-title" id="hero-title-text">Investor · Researcher · Writer</div>
-    <div class="hero-divider"></div>
 
-    <div id="bio-display">
+    <!-- Display mode -->
+    <div id="hero-display">
+      <h1 class="hero-name" id="hero-name-text">Hua Heyu<em>.</em></h1>
+      <div class="hero-title" id="hero-title-text">Investor · Researcher · Writer</div>
+      <div class="hero-divider"></div>
       <p class="hero-bio" id="bio-text">I work at the intersection of capital, ideas, and emerging markets. My research spans private equity, venture formation, and the political economy of technology. I write to think clearly — about industries, systems, and the stories behind the numbers.</p>
     </div>
+
+    <!-- Edit mode -->
     <div id="bio-edit-wrap" style="display:none;">
-      <textarea class="bio-editor" id="bio-editor-input"></textarea>
-      <input type="text" class="bio-editor" id="title-editor-input" placeholder="Your subtitle / tagline" style="min-height:0;height:44px;margin-bottom:10px;font-size:0.95rem;">
+      <div class="field-group" style="margin-bottom:14px;">
+        <label style="font-family:'Inter',sans-serif;font-size:0.7rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-soft);display:block;margin-bottom:7px;">Your Name</label>
+        <input type="text" class="bio-editor" id="name-editor-input" placeholder="Your name" style="min-height:0;height:48px;margin-bottom:0;font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:300;">
+      </div>
+      <div class="field-group" style="margin-bottom:14px;">
+        <label style="font-family:'Inter',sans-serif;font-size:0.7rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-soft);display:block;margin-bottom:7px;">Subtitle / Tagline <span style="color:var(--gold)">(the gold italic line)</span></label>
+        <input type="text" class="bio-editor" id="title-editor-input" placeholder="e.g. Investor · Researcher · Writer" style="min-height:0;height:44px;margin-bottom:0;font-size:0.95rem;">
+      </div>
+      <div class="field-group" style="margin-bottom:18px;">
+        <label style="font-family:'Inter',sans-serif;font-size:0.7rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-soft);display:block;margin-bottom:7px;">Bio Paragraph</label>
+        <textarea class="bio-editor" id="bio-editor-input" style="margin-bottom:0;"></textarea>
+      </div>
       <div style="display:flex;gap:10px;">
-        <button class="btn btn-gold" onclick="saveBio()">Save</button>
+        <button class="btn btn-gold" onclick="saveBio()">Save Changes</button>
         <button class="btn btn-outline" onclick="cancelBioEdit()">Cancel</button>
       </div>
     </div>
 
-    <div class="hero-links" id="hero-links">
+    <div class="hero-links" id="hero-links" style="margin-top:50px;">
       <a href="#work" class="hero-link">Experience</a>
       <a href="#articles" class="hero-link">Writing</a>
       <a href="mailto:huaheyu13@gmail.com" class="hero-link">Contact</a>
     </div>
 
     <div id="edit-bio-btn" style="display:none;margin-top:20px;">
-      <button class="btn btn-outline" onclick="openBioEdit()">Edit Introduction</button>
+      <button class="btn btn-outline" onclick="openBioEdit()">Edit Homepage</button>
     </div>
 
     <div class="hero-scroll-hint">
@@ -815,20 +828,40 @@
         <button class="editor-btn" onclick="fmt('h1')" title="Heading 1"><b>H1</b></button>
         <button class="editor-btn" onclick="fmt('h2')" title="Heading 2"><b>H2</b></button>
         <button class="editor-btn" onclick="fmt('h3')" title="Heading 3"><b>H3</b></button>
+        <button class="editor-btn" onclick="fmt('p')" title="Body text">¶</button>
         <div class="editor-btn sep"></div>
         <button class="editor-btn" onclick="document.execCommand('bold')" title="Bold"><b>B</b></button>
         <button class="editor-btn" onclick="document.execCommand('italic')" title="Italic"><i>I</i></button>
+        <button class="editor-btn" onclick="document.execCommand('underline')" title="Underline"><u>U</u></button>
+        <button class="editor-btn" onclick="document.execCommand('strikeThrough')" title="Strikethrough"><s>S</s></button>
         <div class="editor-btn sep"></div>
-        <button class="editor-btn" onclick="document.execCommand('insertUnorderedList')" title="Bullet List">• List</button>
-        <button class="editor-btn" onclick="document.execCommand('insertOrderedList')" title="Numbered List">1. List</button>
+        <button class="editor-btn" onclick="document.execCommand('justifyLeft')" title="Left">≡L</button>
+        <button class="editor-btn" onclick="document.execCommand('justifyCenter')" title="Center">≡C</button>
+        <button class="editor-btn" onclick="document.execCommand('justifyRight')" title="Right">≡R</button>
+        <div class="editor-btn sep"></div>
+        <button class="editor-btn" onclick="document.execCommand('insertUnorderedList')" title="Bullet list">• List</button>
+        <button class="editor-btn" onclick="document.execCommand('insertOrderedList')" title="Numbered list">1. List</button>
         <div class="editor-btn sep"></div>
         <button class="editor-btn" onclick="insertBlockquote()" title="Blockquote">" Quote</button>
         <button class="editor-btn" onclick="insertHR()" title="Divider">— HR</button>
+        <div class="editor-btn sep"></div>
+        <button class="editor-btn" onclick="insertLink()" title="Insert link">🔗 Link</button>
+        <button class="editor-btn" onclick="document.getElementById('img-upload').click()" title="Upload image">🖼 Image</button>
+        <input type="file" id="img-upload" accept="image/*" style="display:none" onchange="handleImageUpload(this)">
+        <button class="editor-btn" onclick="insertVideo()" title="Embed YouTube/Vimeo">▶ Video</button>
+        <button class="editor-btn" onclick="insertImageURL()" title="Image from URL">🌐 Img URL</button>
+      </div>
+      <div id="upload-progress" style="display:none;padding:8px 16px;background:var(--ivory);border-bottom:1px solid var(--parchment);">
+        <div style="font-family:'Inter',sans-serif;font-size:0.72rem;color:var(--gold);margin-bottom:5px;">Uploading image…</div>
+        <div style="height:3px;background:var(--parchment);border-radius:2px;overflow:hidden;">
+          <div id="upload-bar" style="height:100%;background:var(--gold);width:0%;transition:width 0.3s;"></div>
+        </div>
       </div>
       <div id="editor-area" contenteditable="true" data-placeholder="Begin writing here…"></div>
-      <div style="padding:18px 20px; border-top:1px solid var(--parchment); display:flex; gap:12px;">
+      <div style="padding:18px 20px; border-top:1px solid var(--parchment); display:flex; gap:12px; align-items:center;">
         <button class="btn btn-gold" onclick="publishArticle()">Publish Article</button>
         <button class="btn btn-outline" onclick="closeArticleEditor()">Cancel</button>
+        <span style="font-family:'Inter',sans-serif;font-size:0.7rem;color:var(--ink-soft);margin-left:auto;">Tip: use toolbar to insert images or embed videos</span>
       </div>
     </div>
   </section>
@@ -916,62 +949,117 @@
 
 <script>
 // ═══════════════════════════════
+//  SUPABASE CONFIG
+// ═══════════════════════════════
+const SB_URL  = 'https://wyxispnnavhijndzvvch.supabase.co';
+const SB_KEY  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind5eGlzcG5uYXZoaWpuZHp2dmNoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEyMTE2OTMsImV4cCI6MjA5Njc4NzY5M30.XFTAI5NJjnUJkrRpzB4V9ZDMiPtyTCGpzqjuPDOYwxg';
+
+async function sb(path, opts = {}) {
+  const res = await fetch(`${SB_URL}/rest/v1/${path}`, {
+    headers: {
+      'apikey': SB_KEY,
+      'Authorization': `Bearer ${SB_KEY}`,
+      'Content-Type': 'application/json',
+      'Prefer': opts.prefer || 'return=representation',
+      ...opts.headers
+    },
+    method: opts.method || 'GET',
+    body: opts.body ? JSON.stringify(opts.body) : undefined
+  });
+  if (!res.ok) {
+    const err = await res.text();
+    throw new Error(err);
+  }
+  const text = await res.text();
+  return text ? JSON.parse(text) : null;
+}
+
+// ═══════════════════════════════
 //  STATE
 // ═══════════════════════════════
 const ADMIN_EMAIL = 'huaheyu13@gmail.com';
 const ADMIN_PASS  = 'Jenny15602317923!';
 
+// ═══════════════════════════════
+//  STATE (in-memory only, data lives in Supabase)
+// ═══════════════════════════════
 let state = {
   isAdmin: false,
   otp: null,
   currentArticleId: null,
   editingWorkId: null,
-
-  bio: "I work at the intersection of capital, ideas, and emerging markets. My research spans private equity, venture formation, and the political economy of technology. I write to think clearly — about industries, systems, and the stories behind the numbers.",
-  heroTitle: "Investor · Researcher · Writer",
-
-  work: [
-    {
-      id: 'w1',
-      role: 'Investment Research Analyst',
-      company: 'Example Capital Partners',
-      date: '2023 – Present',
-      desc: 'Leading sector research across technology and consumer verticals. Conducting deep-dive due diligence on private equity and venture-stage opportunities.',
-      tags: ['Private Equity', 'Research', 'Due Diligence']
-    },
-    {
-      id: 'w2',
-      role: 'Strategy Associate',
-      company: 'Global Strategy Consultancy',
-      date: '2021 – 2023',
-      desc: 'Advised Fortune 500 clients on market entry strategies and competitive positioning across APAC and European markets.',
-      tags: ['Strategy', 'APAC', 'Consulting']
-    }
-  ],
-
+  bio: '',
+  heroTitle: '',
+  heroName: 'Hua Heyu',
+  work: [],
   articles: [],
   visibility: { work: true, articles: true },
-  comments: {}
+  commentCounts: {}
 };
 
-// Load from localStorage if available
-function loadState() {
-  try {
-    const saved = localStorage.getItem('hy_site_state');
-    if (saved) {
-      const parsed = JSON.parse(saved);
-      Object.assign(state, parsed);
-      state.isAdmin = false; // never persist admin session
-      state.otp = null;
-    }
-  } catch(e) {}
+// ═══════════════════════════════
+//  HELPERS
+// ═══════════════════════════════
+function esc(str) {
+  return String(str||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+let toastTimer;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 3200);
+}
+function setLoading(on) {
+  document.body.style.cursor = on ? 'wait' : '';
 }
 
-function saveState() {
+// ═══════════════════════════════
+//  LOAD FROM SUPABASE
+// ═══════════════════════════════
+async function loadAll() {
+  setLoading(true);
   try {
-    const toSave = {...state, isAdmin: false, otp: null};
-    localStorage.setItem('hy_site_state', JSON.stringify(toSave));
-  } catch(e) {}
+    // Settings
+    const settings = await sb('site_settings?select=key,value');
+    settings.forEach(s => {
+      if (s.key === 'bio')          state.bio = s.value;
+      if (s.key === 'hero_title')   state.heroTitle = s.value;
+      if (s.key === 'hero_name')    state.heroName = s.value;
+      if (s.key === 'vis_work')     state.visibility.work = s.value === 'true';
+      if (s.key === 'vis_articles') state.visibility.articles = s.value === 'true';
+    });
+
+    // Work
+    const work = await sb('work_experience?select=*&order=sort_order.asc,created_at.asc');
+    state.work = work.map(w => ({
+      id: w.id, role: w.role, company: w.company,
+      date: w.date_range || '', desc: w.description || '',
+      tags: w.tags || [], sort_order: w.sort_order || 0
+    }));
+
+    // Articles
+    const articles = await sb('articles?select=*&order=published_at.desc');
+    state.articles = articles.map(a => ({
+      id: a.id, title: a.title, category: a.category,
+      excerpt: a.excerpt || '', body: a.body || '',
+      date: new Date(a.published_at).toLocaleDateString('en-GB', {day:'numeric',month:'long',year:'numeric'})
+    }));
+
+    // Comment counts
+    const counts = await sb('comments?select=article_id');
+    state.commentCounts = {};
+    counts.forEach(c => {
+      state.commentCounts[c.article_id] = (state.commentCounts[c.article_id] || 0) + 1;
+    });
+
+  } catch(e) {
+    console.error('Load error:', e);
+    showToast('Could not connect to database.');
+  }
+  setLoading(false);
+  render();
 }
 
 // ═══════════════════════════════
@@ -989,6 +1077,11 @@ function render() {
 function renderBio() {
   document.getElementById('bio-text').textContent = state.bio;
   document.getElementById('hero-title-text').textContent = state.heroTitle;
+  const nameEl = document.getElementById('hero-name-text');
+  if (nameEl) {
+    const parts = state.heroName ? state.heroName.split('') : ['Hua Heyu'];
+    nameEl.innerHTML = (state.heroName || 'Hua Heyu') + '<em>.</em>';
+  }
 }
 
 function renderWork() {
@@ -1004,7 +1097,7 @@ function renderWork() {
         <div class="work-role">${esc(w.role)}</div>
         <div class="work-company">${esc(w.company)}</div>
         <div class="work-desc">${esc(w.desc)}</div>
-        <div class="work-tags">${w.tags.map(t=>`<span class="work-tag">${esc(t)}</span>`).join('')}</div>
+        <div class="work-tags">${(w.tags||[]).map(t=>`<span class="work-tag">${esc(t)}</span>`).join('')}</div>
         ${state.isAdmin ? `
           <div class="work-actions">
             <button class="btn btn-ghost" onclick="editWork('${w.id}')">Edit</button>
@@ -1031,7 +1124,7 @@ function renderArticles() {
       <div class="article-card-excerpt">${esc(a.excerpt)}</div>
       <div class="article-card-meta">
         <span>${esc(a.date)}</span>
-        <span>${(state.comments[a.id]||[]).length} comments</span>
+        <span>${state.commentCounts[a.id] || 0} comments</span>
       </div>
       ${state.isAdmin ? `
         <div class="article-card-actions" onclick="event.stopPropagation()">
@@ -1050,15 +1143,11 @@ function renderAdminUI() {
   document.getElementById('add-article-btn-wrap').style.display = isAdmin ? '' : 'none';
   document.getElementById('edit-bio-btn').style.display = isAdmin ? '' : 'none';
   document.getElementById('vis-bar').classList.toggle('open', isAdmin);
-  // Re-render lists to show/hide edit buttons
-  renderWork();
-  renderArticles();
 }
 
 function renderVisibility() {
   document.getElementById('work').style.display = state.visibility.work ? '' : 'none';
   document.getElementById('articles').style.display = state.visibility.articles ? '' : 'none';
-  // nav links
   document.querySelector('[data-section="work"]').style.opacity = state.visibility.work ? '' : '0.3';
   document.querySelector('[data-section="articles"]').style.opacity = state.visibility.articles ? '' : '0.3';
   document.getElementById('vis-work').checked = state.visibility.work;
@@ -1085,14 +1174,14 @@ function attemptLogin() {
   const email = document.getElementById('l-email').value.trim();
   const pass  = document.getElementById('l-pass').value;
   if (email === ADMIN_EMAIL && pass === ADMIN_PASS) {
-    // Generate OTP (simulated — shown in info box since no real email server)
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
     state.otp = otp;
     document.getElementById('login-step-1').style.display = 'none';
     document.getElementById('login-step-2').style.display = '';
-    document.getElementById('otp-info').textContent = `Demo mode: your code is ${otp}`;
+    // Show OTP in modal (demo mode — no email server connected)
+    document.getElementById('otp-info').textContent = `Demo mode: your verification code is ${otp}`;
     document.getElementById('otp-info').style.display = 'block';
-    showToast('Verification code generated (see modal)');
+    showToast('Verification code generated.');
   } else {
     document.getElementById('login-err').classList.add('visible');
   }
@@ -1121,12 +1210,9 @@ document.getElementById('btn-logout').onclick = function() {
   showToast('Signed out.');
 };
 
-// Close on backdrop
 document.getElementById('login-modal').addEventListener('click', function(e) {
   if (e.target === this) closeLogin();
 });
-
-// Enter key
 document.getElementById('l-pass').addEventListener('keydown', e => { if(e.key==='Enter') attemptLogin(); });
 document.getElementById('l-code').addEventListener('keydown', e => { if(e.key==='Enter') verifyOTP(); });
 
@@ -1136,20 +1222,38 @@ document.getElementById('l-code').addEventListener('keydown', e => { if(e.key===
 function openBioEdit() {
   document.getElementById('bio-editor-input').value = state.bio;
   document.getElementById('title-editor-input').value = state.heroTitle;
-  document.getElementById('bio-display').style.display = 'none';
+  document.getElementById('name-editor-input').value = state.heroName || 'Hua Heyu';
+  document.getElementById('hero-display').style.display = 'none';
   document.getElementById('bio-edit-wrap').style.display = '';
 }
 function cancelBioEdit() {
-  document.getElementById('bio-display').style.display = '';
+  document.getElementById('hero-display').style.display = '';
   document.getElementById('bio-edit-wrap').style.display = 'none';
 }
-function saveBio() {
-  state.bio = document.getElementById('bio-editor-input').value.trim() || state.bio;
-  state.heroTitle = document.getElementById('title-editor-input').value.trim() || state.heroTitle;
-  saveState();
-  renderBio();
-  cancelBioEdit();
-  showToast('Introduction updated.');
+async function saveBio() {
+  const newBio   = document.getElementById('bio-editor-input').value.trim() || state.bio;
+  const newTitle = document.getElementById('title-editor-input').value.trim() || state.heroTitle;
+  const newName  = document.getElementById('name-editor-input').value.trim() || state.heroName;
+  try {
+    await sb('site_settings?key=eq.bio', { method:'PATCH', body: { value: newBio }, prefer:'return=minimal' });
+    await sb('site_settings?key=eq.hero_title', { method:'PATCH', body: { value: newTitle }, prefer:'return=minimal' });
+    // Upsert name setting
+    const existing = await sb('site_settings?key=eq.hero_name');
+    if (existing && existing.length) {
+      await sb('site_settings?key=eq.hero_name', { method:'PATCH', body: { value: newName }, prefer:'return=minimal' });
+    } else {
+      await sb('site_settings', { method:'POST', body: { key: 'hero_name', value: newName }, prefer:'return=minimal' });
+    }
+    state.bio = newBio;
+    state.heroTitle = newTitle;
+    state.heroName = newName;
+    renderBio();
+    cancelBioEdit();
+    showToast('Homepage updated.');
+  } catch(e) {
+    showToast('Save failed. Please try again.');
+    console.error(e);
+  }
 }
 
 // ═══════════════════════════════
@@ -1163,11 +1267,9 @@ function toggleAddWork() {
     clearWorkForm();
   }
 }
-
 function clearWorkForm() {
   ['w-role','w-company','w-date','w-desc','w-tags'].forEach(id => document.getElementById(id).value = '');
 }
-
 function editWork(id) {
   const w = state.work.find(x => x.id === id);
   if (!w) return;
@@ -1176,12 +1278,11 @@ function editWork(id) {
   document.getElementById('w-company').value = w.company;
   document.getElementById('w-date').value = w.date;
   document.getElementById('w-desc').value = w.desc;
-  document.getElementById('w-tags').value = w.tags.join(', ');
+  document.getElementById('w-tags').value = (w.tags||[]).join(', ');
   document.getElementById('add-work-panel').classList.add('open');
   document.getElementById('add-work-panel').scrollIntoView({ behavior:'smooth', block:'nearest' });
 }
-
-function saveWork() {
+async function saveWork() {
   const role    = document.getElementById('w-role').value.trim();
   const company = document.getElementById('w-company').value.trim();
   const date    = document.getElementById('w-date').value.trim();
@@ -1189,25 +1290,44 @@ function saveWork() {
   const tags    = document.getElementById('w-tags').value.split(',').map(t=>t.trim()).filter(Boolean);
   if (!role || !company) { showToast('Please fill in role and company.'); return; }
 
-  if (state.editingWorkId) {
-    const w = state.work.find(x => x.id === state.editingWorkId);
-    if (w) { w.role=role; w.company=company; w.date=date; w.desc=desc; w.tags=tags; }
-    state.editingWorkId = null;
-  } else {
-    state.work.unshift({ id: 'w'+Date.now(), role, company, date, desc, tags });
+  try {
+    if (state.editingWorkId) {
+      await sb(`work_experience?id=eq.${state.editingWorkId}`, {
+        method: 'PATCH',
+        body: { role, company, date_range: date, description: desc, tags },
+        prefer: 'return=minimal'
+      });
+      const w = state.work.find(x => x.id === state.editingWorkId);
+      if (w) { w.role=role; w.company=company; w.date=date; w.desc=desc; w.tags=tags; }
+      state.editingWorkId = null;
+    } else {
+      const sort = state.work.length ? Math.min(...state.work.map(w=>w.sort_order||0)) - 1 : 0;
+      const res = await sb('work_experience', {
+        method: 'POST',
+        body: { role, company, date_range: date, description: desc, tags, sort_order: sort }
+      });
+      if (res && res[0]) {
+        state.work.unshift({ id: res[0].id, role, company, date, desc, tags, sort_order: sort });
+      }
+    }
+    renderWork();
+    toggleAddWork();
+    showToast('Experience saved.');
+  } catch(e) {
+    showToast('Save failed. Please try again.');
+    console.error(e);
   }
-  saveState();
-  renderWork();
-  toggleAddWork();
-  showToast('Experience saved.');
 }
-
-function deleteWork(id) {
+async function deleteWork(id) {
   if (!confirm('Remove this experience entry?')) return;
-  state.work = state.work.filter(w => w.id !== id);
-  saveState();
-  renderWork();
-  showToast('Entry removed.');
+  try {
+    await sb(`work_experience?id=eq.${id}`, { method:'DELETE', prefer:'return=minimal' });
+    state.work = state.work.filter(w => w.id !== id);
+    renderWork();
+    showToast('Entry removed.');
+  } catch(e) {
+    showToast('Delete failed.');
+  }
 }
 
 // ═══════════════════════════════
@@ -1235,50 +1355,65 @@ function openArticleEditor(id) {
   }
   panel.scrollIntoView({ behavior:'smooth', block:'start' });
 }
-
 function closeArticleEditor() {
   document.getElementById('article-editor-panel').classList.remove('open');
   editingArticleId = null;
 }
-
 function editArticle(id) { openArticleEditor(id); }
 
-function publishArticle() {
+async function publishArticle() {
   const title   = document.getElementById('art-title').value.trim();
-  const cat     = document.getElementById('art-cat').value.trim();
+  const cat     = document.getElementById('art-cat').value.trim() || 'Article';
   const excerpt = document.getElementById('art-excerpt').value.trim();
   const body    = document.getElementById('editor-area').innerHTML;
   if (!title) { showToast('Please add a title.'); return; }
 
-  const now = new Date().toLocaleDateString('en-GB', {day:'numeric',month:'long',year:'numeric'});
-
-  if (editingArticleId) {
-    const a = state.articles.find(x=>x.id===editingArticleId);
-    if (a) { a.title=title; a.category=cat||'Article'; a.excerpt=excerpt; a.body=body; }
-  } else {
-    state.articles.unshift({
-      id: 'a'+Date.now(), title, category: cat||'Article', excerpt: excerpt||'',
-      body, date: now
-    });
+  try {
+    if (editingArticleId) {
+      await sb(`articles?id=eq.${editingArticleId}`, {
+        method: 'PATCH',
+        body: { title, category: cat, excerpt, body },
+        prefer: 'return=minimal'
+      });
+      const a = state.articles.find(x=>x.id===editingArticleId);
+      if (a) { a.title=title; a.category=cat; a.excerpt=excerpt; a.body=body; }
+    } else {
+      const res = await sb('articles', {
+        method: 'POST',
+        body: { title, category: cat, excerpt, body }
+      });
+      if (res && res[0]) {
+        const a = res[0];
+        state.articles.unshift({
+          id: a.id, title, category: cat, excerpt, body,
+          date: new Date(a.published_at).toLocaleDateString('en-GB', {day:'numeric',month:'long',year:'numeric'})
+        });
+      }
+    }
+    closeArticleEditor();
+    renderArticles();
+    showToast('Article published.');
+  } catch(e) {
+    showToast('Publish failed. Please try again.');
+    console.error(e);
   }
-  saveState();
-  closeArticleEditor();
-  renderArticles();
-  showToast('Article published.');
 }
 
-function deleteArticle(id) {
+async function deleteArticle(id) {
   if (!confirm('Delete this article?')) return;
-  state.articles = state.articles.filter(a => a.id !== id);
-  saveState();
-  renderArticles();
-  showToast('Article deleted.');
+  try {
+    await sb(`articles?id=eq.${id}`, { method:'DELETE', prefer:'return=minimal' });
+    state.articles = state.articles.filter(a => a.id !== id);
+    renderArticles();
+    showToast('Article deleted.');
+  } catch(e) {
+    showToast('Delete failed.');
+  }
 }
 
-// ─── Editor toolbar commands ───
+// ─── Editor toolbar ───
 function fmt(tag) {
-  const area = document.getElementById('editor-area');
-  area.focus();
+  document.getElementById('editor-area').focus();
   document.execCommand('formatBlock', false, tag);
 }
 function insertBlockquote() {
@@ -1290,8 +1425,8 @@ function insertHR() {
   document.execCommand('insertHorizontalRule');
 }
 
-// ─── Open article view ───
-function openArticle(id) {
+// ─── Article full view ───
+async function openArticle(id) {
   const a = state.articles.find(x=>x.id===id);
   if (!a) return;
   state.currentArticleId = id;
@@ -1299,9 +1434,9 @@ function openArticle(id) {
   document.getElementById('af-title').textContent = a.title;
   document.getElementById('af-meta').textContent = a.date;
   document.getElementById('af-body').innerHTML = a.body;
-  renderComments(id);
   document.getElementById('article-overlay').classList.add('open');
   document.body.style.overflow = 'hidden';
+  await loadComments(id);
 }
 function closeArticle() {
   document.getElementById('article-overlay').classList.remove('open');
@@ -1313,44 +1448,58 @@ document.getElementById('article-overlay').addEventListener('click', function(e)
 });
 
 // ─── Comments ───
-function renderComments(id) {
+async function loadComments(articleId) {
   const list = document.getElementById('comment-list');
-  const comments = state.comments[id] || [];
-  list.innerHTML = comments.length ? comments.map(c=>`
-    <div class="comment-item">
-      <div class="comment-author">${esc(c.name)}</div>
-      <div class="comment-text">${esc(c.text)}</div>
-      <div class="comment-date">${c.date}</div>
-    </div>
-  `).join('') : '<div style="color:var(--ink-soft);font-style:italic;font-family:\'Crimson Pro\',serif;">Be the first to comment.</div>';
+  list.innerHTML = '<div style="color:var(--ink-soft);font-style:italic;font-family:\'Crimson Pro\',serif;">Loading…</div>';
+  try {
+    const comments = await sb(`comments?article_id=eq.${articleId}&order=created_at.asc`);
+    list.innerHTML = comments.length ? comments.map(c=>`
+      <div class="comment-item">
+        <div class="comment-author">${esc(c.author_name)}</div>
+        <div class="comment-text">${esc(c.content)}</div>
+        <div class="comment-date">${new Date(c.created_at).toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'})}</div>
+      </div>
+    `).join('') : '<div style="color:var(--ink-soft);font-style:italic;font-family:\'Crimson Pro\',serif;">Be the first to comment.</div>';
+  } catch(e) {
+    list.innerHTML = '<div style="color:var(--ink-soft);">Could not load comments.</div>';
+  }
   document.getElementById('comment-name').value = '';
   document.getElementById('comment-text').value = '';
 }
 
-function postComment() {
+async function postComment() {
   const id = state.currentArticleId;
   if (!id) return;
   const name = document.getElementById('comment-name').value.trim();
   const text = document.getElementById('comment-text').value.trim();
   if (!name || !text) { showToast('Please add your name and comment.'); return; }
-  if (!state.comments[id]) state.comments[id] = [];
-  state.comments[id].push({
-    name, text,
-    date: new Date().toLocaleDateString('en-GB', {day:'numeric',month:'long',year:'numeric'})
-  });
-  saveState();
-  renderComments(id);
-  renderArticles(); // update comment count
-  showToast('Comment posted.');
+  try {
+    await sb('comments', {
+      method: 'POST',
+      body: { article_id: id, author_name: name, content: text },
+      prefer: 'return=minimal'
+    });
+    state.commentCounts[id] = (state.commentCounts[id] || 0) + 1;
+    await loadComments(id);
+    renderArticles();
+    showToast('Comment posted.');
+  } catch(e) {
+    showToast('Could not post comment.');
+  }
 }
 
 // ═══════════════════════════════
 //  VISIBILITY
 // ═══════════════════════════════
-function toggleSection(section, visible) {
+async function toggleSection(section, visible) {
   state.visibility[section] = visible;
-  saveState();
   renderVisibility();
+  const key = section === 'work' ? 'vis_work' : 'vis_articles';
+  try {
+    await sb(`site_settings?key=eq.${key}`, {
+      method: 'PATCH', body: { value: String(visible) }, prefer: 'return=minimal'
+    });
+  } catch(e) { /* non-critical */ }
 }
 
 // ═══════════════════════════════
@@ -1364,11 +1513,8 @@ window.addEventListener('scroll', () => {
     const el = document.getElementById(id);
     if (el && el.offsetTop <= scrollY) current = id;
   });
-  navLinks.forEach(l => {
-    l.classList.toggle('active', l.dataset.section === current);
-  });
+  navLinks.forEach(l => l.classList.toggle('active', l.dataset.section === current));
 });
-
 navLinks.forEach(l => {
   l.addEventListener('click', e => {
     e.preventDefault();
@@ -1377,27 +1523,140 @@ navLinks.forEach(l => {
   });
 });
 
-// ═══════════════════════════════
-//  HELPERS
-// ═══════════════════════════════
-function esc(str) {
-  return String(str||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+
+// ─── Link insert ───
+function insertLink() {
+  const url = prompt('Enter URL:', 'https://');
+  if (!url) return;
+  const text = prompt('Link text (leave blank to use URL):', '');
+  document.getElementById('editor-area').focus();
+  document.execCommand('insertHTML', false,
+    `<a href="${url}" target="_blank" rel="noopener" style="color:var(--gold);text-decoration:underline;">${text || url}</a>`
+  );
 }
 
-let toastTimer;
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => t.classList.remove('show'), 3000);
+// ─── Image from URL ───
+function insertImageURL() {
+  const url = prompt('Enter image URL:');
+  if (!url) return;
+  document.getElementById('editor-area').focus();
+  document.execCommand('insertHTML', false,
+    `<figure style="margin:24px 0;text-align:center;">
+      <img src="${url}" style="max-width:100%;height:auto;border-radius:2px;" loading="lazy">
+    </figure>`
+  );
+}
+
+// ─── Image file upload → Supabase Storage ───
+async function handleImageUpload(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const maxMB = 10;
+  if (file.size > maxMB * 1024 * 1024) { showToast(`Image must be under ${maxMB}MB.`); return; }
+
+  const prog = document.getElementById('upload-progress');
+  const bar  = document.getElementById('upload-bar');
+  prog.style.display = 'block';
+  bar.style.width = '20%';
+
+  try {
+    const ext  = file.name.split('.').pop();
+    const name = `article-img-${Date.now()}.${ext}`;
+    bar.style.width = '50%';
+
+    const res = await fetch(`${SB_URL}/storage/v1/object/article-images/${name}`, {
+      method: 'POST',
+      headers: {
+        'apikey': SB_KEY,
+        'Authorization': `Bearer ${SB_KEY}`,
+        'Content-Type': file.type,
+        'x-upsert': 'true'
+      },
+      body: file
+    });
+
+    bar.style.width = '90%';
+
+    if (!res.ok) {
+      // Fallback: embed as base64 data URL if storage bucket not set up
+      const reader = new FileReader();
+      reader.onload = e => {
+        document.getElementById('editor-area').focus();
+        document.execCommand('insertHTML', false,
+          `<figure style="margin:24px 0;text-align:center;">
+            <img src="${e.target.result}" style="max-width:100%;height:auto;border-radius:2px;">
+          </figure>`
+        );
+        prog.style.display = 'none';
+        bar.style.width = '0%';
+        showToast('Image inserted (embedded).');
+      };
+      reader.readAsDataURL(file);
+    } else {
+      const publicURL = `${SB_URL}/storage/v1/object/public/article-images/${name}`;
+      document.getElementById('editor-area').focus();
+      document.execCommand('insertHTML', false,
+        `<figure style="margin:24px 0;text-align:center;">
+          <img src="${publicURL}" style="max-width:100%;height:auto;border-radius:2px;" loading="lazy">
+        </figure>`
+      );
+      bar.style.width = '100%';
+      setTimeout(() => { prog.style.display = 'none'; bar.style.width = '0%'; }, 600);
+      showToast('Image uploaded and inserted.');
+    }
+  } catch(e) {
+    // Final fallback: base64
+    const reader = new FileReader();
+    reader.onload = ev => {
+      document.getElementById('editor-area').focus();
+      document.execCommand('insertHTML', false,
+        `<figure style="margin:24px 0;text-align:center;">
+          <img src="${ev.target.result}" style="max-width:100%;height:auto;border-radius:2px;">
+        </figure>`
+      );
+    };
+    reader.readAsDataURL(file);
+    prog.style.display = 'none';
+    showToast('Image inserted (embedded).');
+  }
+  input.value = '';
+}
+
+// ─── Video embed (YouTube / Vimeo) ───
+function insertVideo() {
+  const url = prompt('Paste YouTube or Vimeo URL:');
+  if (!url) return;
+  let embedSrc = '';
+
+  // YouTube
+  const ytMatch = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))?(?:v=)?([\w-]{11})/);
+  if (ytMatch) {
+    embedSrc = `https://www.youtube.com/embed/${ytMatch[1]}`;
+  }
+  // Vimeo
+  const vmMatch = url.match(/vimeo\.com\/(\d+)/);
+  if (vmMatch) {
+    embedSrc = `https://player.vimeo.com/video/${vmMatch[1]}`;
+  }
+
+  if (!embedSrc) {
+    showToast('Could not recognise URL. Please use a YouTube or Vimeo link.');
+    return;
+  }
+
+  document.getElementById('editor-area').focus();
+  document.execCommand('insertHTML', false,
+    `<figure style="margin:28px 0;position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:2px;">
+      <iframe src="${embedSrc}" style="position:absolute;top:0;left:0;width:100%;height:100%;border:none;" allowfullscreen loading="lazy"></iframe>
+    </figure>`
+  );
+  showToast('Video embedded.');
 }
 
 // ═══════════════════════════════
 //  INIT
 // ═══════════════════════════════
-loadState();
-render();
-</script>
+loadAll();
+
 </body>
 </html>
