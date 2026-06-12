@@ -98,18 +98,24 @@ section{padding:100px 60px;max-width:1100px;margin:0 auto;}
 .article-full-title{font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,3vw,2.8rem);font-weight:400;line-height:1.15;color:var(--ink);margin-bottom:14px;}
 .article-full-meta{font-family:'Inter',sans-serif;font-size:0.72rem;color:var(--ink-soft);margin-bottom:36px;padding-bottom:28px;border-bottom:1px solid rgba(196,153,58,0.15);}
 .article-full-body{font-family:'Crimson Pro',serif;font-size:1.12rem;font-weight:300;line-height:1.9;color:var(--ink-mid);}
-.article-full-body h1{font-family:'Cormorant Garamond',serif;font-size:1.9rem;font-weight:500;color:var(--ink);margin:36px 0 14px;}
-.article-full-body h2{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:500;color:var(--ink);margin:28px 0 12px;}
-.article-full-body h3{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:500;color:var(--ink-mid);margin:22px 0 10px;}
-.article-full-body p{margin-bottom:18px;}
-.article-full-body ul,.article-full-body ol{padding-left:22px;margin-bottom:18px;}
+.article-full-body *{box-sizing:border-box;}
+.article-full-body h1{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:500;color:var(--ink);margin:36px 0 14px;line-height:1.15;display:block;}
+.article-full-body h2{font-family:'Cormorant Garamond',serif;font-size:1.55rem;font-weight:500;color:var(--ink);margin:28px 0 12px;line-height:1.2;display:block;}
+.article-full-body h3{font-family:'Cormorant Garamond',serif;font-size:1.25rem;font-weight:500;color:var(--ink-mid);margin:22px 0 10px;line-height:1.25;display:block;}
+.article-full-body p{margin-bottom:20px;display:block;}
+.article-full-body div{margin-bottom:20px;}
+.article-full-body br+br{display:none;}
+.article-full-body ul,.article-full-body ol{padding-left:22px;margin-bottom:18px;display:block;}
 .article-full-body li{margin-bottom:6px;}
 .article-full-body strong{font-weight:600;color:var(--ink);}
 .article-full-body em{font-style:italic;}
-.article-full-body blockquote{border-left:2px solid var(--gold);padding-left:20px;color:var(--ink-soft);font-style:italic;margin:24px 0;}
+.article-full-body u{text-decoration:underline;}
+.article-full-body blockquote{border-left:2px solid var(--gold);padding-left:20px;color:var(--ink-soft);font-style:italic;margin:24px 0;display:block;}
 .article-full-body img{max-width:100%;height:auto;border-radius:2px;margin:16px 0;}
-.article-full-body figure{margin:24px 0;text-align:center;}
-.article-full-body iframe{max-width:100%;}
+.article-full-body figure{margin:24px 0;text-align:center;display:block;}
+.article-full-body figure iframe{width:100%;aspect-ratio:16/9;height:auto;border:none;}
+.article-full-body a{color:var(--gold);text-decoration:underline;}
+.article-full-body hr{border:none;border-top:1px solid var(--parchment);margin:28px 0;}
 
 .comments-section{margin-top:50px;padding-top:36px;border-top:1px solid rgba(196,153,58,0.15);}
 .comments-title{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:400;color:var(--ink);margin-bottom:24px;}
@@ -128,6 +134,16 @@ section{padding:100px 60px;max-width:1100px;margin:0 auto;}
 .editor-sep{width:1px;height:20px;background:var(--parchment);margin:2px 4px;display:inline-block;}
 #editor-area{min-height:300px;padding:20px;font-family:'Crimson Pro',serif;font-size:1.1rem;line-height:1.85;color:var(--ink-mid);outline:none;background:var(--white);border:1px solid var(--parchment);border-top:none;}
 #editor-area:focus{border-color:var(--gold-light);}
+#editor-area h1{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:500;color:var(--ink);margin:28px 0 12px;line-height:1.15;}
+#editor-area h2{font-family:'Cormorant Garamond',serif;font-size:1.55rem;font-weight:500;color:var(--ink);margin:22px 0 10px;line-height:1.2;}
+#editor-area h3{font-family:'Cormorant Garamond',serif;font-size:1.25rem;font-weight:500;color:var(--ink-mid);margin:18px 0 8px;line-height:1.25;}
+#editor-area p,#editor-area div{margin-bottom:16px;}
+#editor-area ul,#editor-area ol{padding-left:22px;margin-bottom:14px;}
+#editor-area li{margin-bottom:4px;}
+#editor-area blockquote{border-left:2px solid var(--gold);padding-left:18px;color:var(--ink-soft);font-style:italic;margin:20px 0;}
+#editor-area a{color:var(--gold);text-decoration:underline;}
+#editor-area strong{font-weight:600;color:var(--ink);}
+#editor-area hr{border:none;border-top:1px solid var(--parchment);margin:24px 0;}
 #editor-area img{max-width:100%;height:auto;}
 #editor-area figure{margin:20px 0;text-align:center;}
 
@@ -286,6 +302,15 @@ footer span{color:var(--gold);}
         </div>
       </div>
       <div class="editor-toolbar">
+        <select onchange="doFontSize(this.value)" title="Font size" style="font-family:'Inter',sans-serif;font-size:0.75rem;color:var(--ink-soft);background:none;border:none;padding:4px 6px;cursor:pointer;border-radius:2px;outline:none;">
+          <option value="">Size</option>
+          <option value="1">Small</option>
+          <option value="3">Normal</option>
+          <option value="4">Large</option>
+          <option value="5">X-Large</option>
+          <option value="6">XX-Large</option>
+        </select>
+        <span class="editor-sep"></span>
         <button class="editor-btn" onclick="fmt('h1')"><b>H1</b></button>
         <button class="editor-btn" onclick="fmt('h2')"><b>H2</b></button>
         <button class="editor-btn" onclick="fmt('h3')"><b>H3</b></button>
@@ -683,6 +708,13 @@ async function deleteArticle(id){
 
 // ── EDITOR TOOLBAR ──
 function fmt(tag){ document.getElementById('editor-area').focus(); document.execCommand('formatBlock',false,tag); }
+function doFontSize(size){
+  if(!size) return;
+  document.getElementById('editor-area').focus();
+  document.execCommand('fontSize', false, size);
+  // Reset select display
+  event.target.value='';
+}
 function doBlockquote(){ document.getElementById('editor-area').focus(); document.execCommand('formatBlock',false,'blockquote'); }
 function doLink(){
   const url=prompt('Enter URL:','https://');
