@@ -408,6 +408,18 @@ async function sb(path, opts={}) {
   return t ? JSON.parse(t) : null;
 }
 
+// ── EMAIL ──
+const EDGE_URL = 'https://wyxispnnavhijndzvvch.supabase.co/functions/v1/send-email';
+async function sendEmail(type, message=''){
+  try{
+    await fetch(EDGE_URL, {
+      method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind5eGlzcG5uYXZoaWpuZHp2dmNoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEyMTE2OTMsImV4cCI6MjA5Njc4NzY5M30.XFTAI5NJjnUJkrRpzB4V9ZDMiPtyTCGpzqjuPDOYwxg'},
+      body:JSON.stringify({type, message})
+    });
+  }catch(e){ console.warn('Email send failed:',e); }
+}
+
 // ── STATE ──
 const ADMIN_EMAIL = 'huaheyu13@gmail.com';
 const ADMIN_PASS  = 'Jenny15602317923!';
@@ -515,7 +527,7 @@ function resetLoginModal(){
   document.getElementById('l-pass').value='';
   document.getElementById('l-code').value='';
 }
-function attemptLogin(){
+async function attemptLogin(){
   const email=document.getElementById('l-email').value.trim();
   const pass=document.getElementById('l-pass').value;
   if(email===ADMIN_EMAIL && pass===ADMIN_PASS){
@@ -523,17 +535,20 @@ function attemptLogin(){
     state.otp=otp;
     document.getElementById('login-step-1').style.display='none';
     document.getElementById('login-step-2').style.display='';
-    document.getElementById('otp-info').textContent='Demo mode — your code is: '+otp;
-    showToast('Verification code generated.');
+    document.getElementById('otp-info').textContent='Sending code to your email…';
+    showToast('Sending verification code to your email…');
+    await sendEmail('otp', otp);
+    document.getElementById('otp-info').textContent='Code sent to huaheyu13@gmail.com';
   } else {
     document.getElementById('login-err').classList.add('visible');
   }
 }
-function verifyOTP(){
+async function verifyOTP(){
   if(document.getElementById('l-code').value.trim()===state.otp){
     state.isAdmin=true; state.otp=null;
     closeLogin(); renderAdminUI();
     showToast('Welcome back. Admin mode active.');
+    await sendEmail('login_success');
   } else {
     document.getElementById('otp-err').classList.add('visible');
   }
@@ -572,6 +587,7 @@ async function saveBio(){
     else{ await sb('site_settings',{method:'POST',body:{key:'hero_name',value:newName},prefer:'return=minimal'}); }
     state.bio=newBio; state.heroTitle=newTitle; state.heroName=newName;
     renderBio(); cancelBioEdit(); showToast('Homepage updated.');
+    await sendEmail('content_change','Homepage was updated.');
   }catch(e){ showToast('Save failed.'); }
 }
 
@@ -611,6 +627,7 @@ async function saveWork(){
       if(res&&res[0]) state.work.unshift({id:res[0].id,role,company,date,desc,tags,sort_order:sort});
     }
     renderWork(); toggleAddWork(); showToast('Experience saved.');
+    await sendEmail('content_change','Work experience was updated.');
   }catch(e){ showToast('Save failed.'); }
 }
 async function deleteWork(id){
@@ -653,6 +670,7 @@ async function publishArticle(){
       if(res&&res[0]){ const a=res[0]; state.articles.unshift({id:a.id,title,category:cat,excerpt,body,date:new Date(a.published_at).toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'})}); }
     }
     closeArticleEditor(); renderArticles(); showToast('Article published.');
+    await sendEmail('content_change', (editingArticleId?'Article updated: ':'New article published: ')+title);
   }catch(e){ showToast('Publish failed.'); console.error(e); }
 }
 async function deleteArticle(id){
