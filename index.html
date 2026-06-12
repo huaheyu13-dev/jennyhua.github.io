@@ -1157,9 +1157,30 @@ function renderVisibility() {
 // ═══════════════════════════════
 //  AUTH
 // ═══════════════════════════════
-function openLogin() { document.getElementById('login-modal').classList.add('open'); }
-function closeLogin() { document.getElementById('login-modal').classList.remove('open'); resetLoginModal(); }
-document.getElementById('btn-open-login').onclick = openLogin;
+function openLogin() {
+  const modal = document.getElementById('login-modal');
+  if (modal) modal.classList.add('open');
+}
+function closeLogin() {
+  const modal = document.getElementById('login-modal');
+  if (modal) modal.classList.remove('open');
+  resetLoginModal();
+}
+// Bind login button — use onclick attribute as fallback too
+function bindLoginBtn() {
+  const btn = document.getElementById('btn-open-login');
+  if (btn) btn.onclick = openLogin;
+  const logoutBtn = document.getElementById('btn-logout');
+  if (logoutBtn) logoutBtn.onclick = handleLogout;
+  const overlay = document.getElementById('login-modal');
+  if (overlay) overlay.addEventListener('click', function(e) { if (e.target === this) closeLogin(); });
+  const passInput = document.getElementById('l-pass');
+  if (passInput) passInput.addEventListener('keydown', e => { if(e.key==='Enter') attemptLogin(); });
+  const codeInput = document.getElementById('l-code');
+  if (codeInput) codeInput.addEventListener('keydown', e => { if(e.key==='Enter') verifyOTP(); });
+  const articleOverlay = document.getElementById('article-overlay');
+  if (articleOverlay) articleOverlay.addEventListener('click', function(e) { if (e.target === this) closeArticle(); });
+}
 
 function resetLoginModal() {
   document.getElementById('login-step-1').style.display = '';
@@ -1200,7 +1221,7 @@ function verifyOTP() {
   }
 }
 
-document.getElementById('btn-logout').onclick = function() {
+function handleLogout() {
   state.isAdmin = false;
   document.getElementById('add-work-panel').classList.remove('open');
   document.getElementById('article-editor-panel').classList.remove('open');
@@ -1210,11 +1231,7 @@ document.getElementById('btn-logout').onclick = function() {
   showToast('Signed out.');
 };
 
-document.getElementById('login-modal').addEventListener('click', function(e) {
-  if (e.target === this) closeLogin();
-});
-document.getElementById('l-pass').addEventListener('keydown', e => { if(e.key==='Enter') attemptLogin(); });
-document.getElementById('l-code').addEventListener('keydown', e => { if(e.key==='Enter') verifyOTP(); });
+
 
 // ═══════════════════════════════
 //  BIO EDIT
@@ -1443,9 +1460,7 @@ function closeArticle() {
   document.body.style.overflow = '';
   state.currentArticleId = null;
 }
-document.getElementById('article-overlay').addEventListener('click', function(e) {
-  if (e.target === this) closeArticle();
-});
+// article overlay click handled in bindLoginBtn
 
 // ─── Comments ───
 async function loadComments(articleId) {
@@ -1656,7 +1671,12 @@ function insertVideo() {
 // ═══════════════════════════════
 //  INIT
 // ═══════════════════════════════
-loadAll();
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', () => { bindLoginBtn(); loadAll(); });
+} else {
+  bindLoginBtn();
+  loadAll();
+}
 
 </body>
 </html>
